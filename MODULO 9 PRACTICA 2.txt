@@ -1,0 +1,51 @@
+sudo yum install -y yum-utils  
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo  
+sudo yum -y install terraform  
+
+mkdir /home/monitor  
+cd monitor/  
+nano archivo.tf  
+
+
+terraform init  
+terraform validate  
+
+
+terraform {  
+  required_providers {  
+    digitalocean = {  
+      source  = "digitalocean/digitalocean"  
+      version = "~> 2.0"  
+    }  
+  }  
+}  
+
+# Set the variable value in *.tfvars file  
+# or using -var="do_token=..." CLI option  
+variable "do_token" {}  
+
+# Configure the DigitalOcean Provider  
+provider "digitalocean" {  
+  token = var.do_token  
+}  
+
+#VM  
+# Create a new Web Droplet in the nyc2 region  
+resource "digitalocean_droplet" "web" {  
+  image  = "ubuntu-22-04-x64"  
+  name   = "OS3VM"  
+  region = "nyc1"  
+  size   = "s-1vcpu-1gb"  
+  ssh_keys = ["fc"]  
+}  
+
+terraform apply
+
+crear API 
+
+nano token.txt  
+
+dop_v1_ 
+
+
+ssh root@
