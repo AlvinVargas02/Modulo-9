@@ -1,0 +1,15 @@
+PRAC 4
+
+Utilizando el modulo win_copy utilize un comando ad-hoc que copie un archivo txt ubicado en el escritorio de la maquina ansible2 a la carpeta de documentos
+Utilizando el modulo reboot utilize un comando ad-hoc que reinicie la VM ansible 1
+
+CONTROLLER  
+
+ansible linux -m reboot -b --ask-become-pass  
+
+# En Windows  
+
+CAMBIAR AL USUARIO ANSIBLE  
+crear el txt  
+
+ansible win -m win_copy -a "src='C:/Users/ansible/Desktop/prueba.txt' dest='/Users/ansible/Documents/prueba.txt' remote_src=yes"  
