@@ -1,0 +1,22 @@
+sudo dnf install -y perl wget  
+
+Crea el archivo del repo:  
+bash  
+sudo nano /etc/yum.repos.d/webmin.repo  
+
+[Webmin]  
+name=Webmin Distribution Neutral  
+baseurl=https://download.webmin.com/download/yum  
+enabled=1  
+gpgcheck=1  
+gpgkey=https://download.webmin.com/jcameron-key.asc  
+
+Instalar Webmin:  
+sudo dnf install webmin -y  
+sudo systemctl enable webmin  
+sudo systemctl start webmin  
+
+sudo firewall-cmd --permanent --add-port=10000/tcp  
+sudo firewall-cmd --reload  
+
+https://192.168.100.  
