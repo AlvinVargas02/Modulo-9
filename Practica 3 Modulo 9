@@ -1,0 +1,68 @@
+1#Instalar Ansible y dependencias en el Ansible Controller (Rocky Linux)
+sudo dnf update -y
+
+2#Habilita el repositorio de EPEL (Extra Packages for Enterprise Linux):
+sudo dnf install epel-release -y
+
+3#Instala Ansible:
+sudo dnf install ansible -y
+
+4# Verifica la instalación de Ansible:
+ansible --version
+
+2. Configurar el cliente Linux (DigitalOcean VM)
+
+Crear el usuario ansible con acceso sudo:
+sudo useradd ansible
+sudo passwd ansible
+sudo usermod -aG wheel ansible
+
+Habilitar SSH para el usuario ansible:
+
+En el Ansible Controller (Rocky Linux), genera un par de llaves SSH:
+ssh-keygen -t rsa -b 4096
+
+Copia la llave pública al cliente Linux:
+ssh-copy-id ansible@<IP_DEL_CLIENTE_LINUX>
+
+Prueba la conexión:
+ssh ansible@<IP_DEL_CLIENTE_LINUX>
+
+3. Configurar el cliente Windows
+
+Habilitar WinRM en la VM de Windows:
+
+Abre PowerShell como administrador y ejecuta:
+Set-ExecutionPolicy RemoteSigned -Force
+Install-Module -Name PSWSMan
+Install-Module -Name Ansible
+ConfigureRemotingForAnsible
+
+Crear el usuario ansible con permisos de administrador:
+En Windows, abre PowerShell como administrador y ejecuta:
+
+New-LocalUser -Name "ansible" -Password (ConvertTo-SecureString "YourPasswordHere" -AsPlainText -Force)
+Add-LocalGroupMember -Group "Administrators" -Member "ansible"
+
+Configurar CredSSP para autenticación (opcional):
+Enable-WSManCredSSP -Role Server
+
+4. Crear el inventario de Ansible
+Edita el archivo de inventario en /etc/ansible/hosts:
+sudo nano /etc/ansible/hosts
+
+Agrega los hosts en el archivo:
+
+[win]
+<IP_DEL_CLIENTE_WINDOWS> ansible_user=ansible ansible_password=YourPasswordHere ansible_connection=winrm
+
+[linux]
+<IP_DEL_CLIENTE_LINUX> ansible_user=ansible ansible_ssh_private_key_file=/home/ansible/.ssh/id_rsa
+
+5. Probar la conexión a los hosts
+Para probar la conectividad con el cliente Linux:
+ansible -m ping linux
+
+Para probar la conectividad con el cliente Windows:
+
+ansible -m win_ping win
