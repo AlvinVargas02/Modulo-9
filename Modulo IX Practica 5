@@ -1,0 +1,45 @@
+nano notepad.yml  
+---  
+- name: Install Notepad++ on Windows  
+  hosts: win  
+  gather_facts: false  
+  tasks:  
+    - name: Download Notepad++ Installer to Downloads  
+      win_get_url:  
+        url: "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.1.9.3/npp.8.1.9.3.Installer.exe"  
+        dest: "C:\Users\ansible\Downloads\npp_installer.exe"  
+
+    - name: Install Notepad++  
+      win_package:  
+        path: "C:\Users\ansible\Downloads\npp_installer.exe"  
+        arguments: "/S"  
+        state: present
+
+En caso de que no funcione cambiarlo por esto
+
+---  
+- name: Instalar Notepad++ en Windows con Chocolatey  
+  hosts: win  
+  tasks:  
+    - name: Instalar Notepad++  
+      win_chocolatey:  
+        name: notepadplusplus  
+        state: present    
+---
+ansible-playbook notepad.yml  
+
+
+nano repositories.yml  
+
+---  
+- name: Actualizar repositorios y paquetes en Rocky Linux  
+  hosts: linux  
+  become: yes  
+  
+  tasks:  
+    - name: Actualizar todos los paquetes  
+      dnf:  
+        name: "*"  
+        state: latest  
+
+ansible-playbook repositories.yml  
